@@ -12,7 +12,7 @@ app.use(express.urlencoded({ extended: true }));
 
 
 
-app.use("/api", contactRouter);
+app.use("/", contactRouter);
 // -------------------------------------------------------------------------
 //database connection
 const connectToDB = async () => {

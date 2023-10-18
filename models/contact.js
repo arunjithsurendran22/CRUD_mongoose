@@ -42,6 +42,6 @@ const contactSchema = new mongoose.Schema({
 });
 
 // Define a model using the schema
-const Contact = mongoose.model("Contact", contactSchema);
+const Contact = mongoose.model("users", contactSchema);
 
 module.exports = Contact;

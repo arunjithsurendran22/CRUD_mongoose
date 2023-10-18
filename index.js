@@ -1,45 +1,36 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
-const e = require("express");
-
+const contactRouter = require("./routes/contact");
 
 const app = express();
 // -------------------------------------------------------------------------
 //middleware
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 // -------------------------------------------------------------------------
 
+
+
+app.use("/api", contactRouter);
 // -------------------------------------------------------------------------
 //database connection
 const connectToDB = async () => {
   try {
-    await mongoose.connect("mongodb://localhost:27017/CRUDmongoose", {
+    await mongoose.connect("mongodb://127.0.0.1:27017/CRUDmongoose", {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     });
     console.log("connected to MongoDB");
   } catch (err) {
     console.error(err);
-  } finally {
-    process.exit(1); // Exit the process on error
   }
 };
 connectToDB();
 // -------------------------------------------------------------------------
 
-
-
-
-
-
-
-
-
-
 // ------------------------------------------------------------------------
-//server creation 
+//server creation
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`server running on PORT ${PORT}`);

@@ -45,13 +45,18 @@ router.get("/contact", async (req, res) => {
   }
 });
 
-//GET A SPECIFIC DATA SIGLE DATA ON MONGO
+//GET A SPECIFIC DATA SIGLE DATA ON MONGO USING ID
 router.get('/contact/:id',async(req,res)=>{
     try{
         const id=req.params.id
         Contact.findById(id)
         .then((contacts)=>{
-            
+            console.log(contacts);
+            res.status(200).json({contacts:contacts})
+        })
+        .catch((error)=>{
+            console.log(error);
+            res.status(500).json({message:"unable to get contact"})
         })
  
     }catch(err){
@@ -60,5 +65,30 @@ router.get('/contact/:id',async(req,res)=>{
     }
 })
 
+//GET METHDO SEARCH  USING SEARCH
+router.get('/contact/search',async(req,res)=>{
+    try{
+        const searchTerm=req.query.searchTerm
+        const searchRegex=new RegExp(searchTerm,'i')
+        const mathchingContact=await Contact.find({
+            $or:[
+                {firstName:searchRegex},
+                {lastName:searchRegex},
+                {emailAddress:searchRegex}
+            ]
+        })
+        .then((contacts)=>{
+            console.log(contacts);
+            res.status(200).json({contacts:contacts})
+
+        })
+        .catch((error)=>{
+            console.log(error);
+        })
+    }catch(err){
+        console.log(err);
+        res.status(500).json({message:'unable to get data you are searched'})
+    }
+})
 
 module.exports = router;
